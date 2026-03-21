@@ -106,4 +106,14 @@ composer analyse
 
 ## Architecture Overview
 
+The application is split into two independent modules:
+
+```
+Modules/
+├── Catalog/    — product catalog, categories, Filament CRUD
+└── Order/      — order processing, Livewire order creation, status workflow
+```
+
+### Cross-module Communication
+
 Coming soon.
