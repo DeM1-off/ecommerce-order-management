@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Order\Providers;
 
-use Illuminate\Console\Scheduling\Schedule;
+use Modules\Order\Contracts\OrderRepositoryInterface;
+use Modules\Order\Repositories\OrderRepository;
 use Nwidart\Modules\Support\ModuleServiceProvider;
 
 class OrderServiceProvider extends ModuleServiceProvider
@@ -34,13 +37,15 @@ class OrderServiceProvider extends ModuleServiceProvider
         RouteServiceProvider::class,
     ];
 
-    /**
-     * Define module schedules.
-     *
-     * @param  $schedule
-     */
-    // protected function configureSchedules(Schedule $schedule): void
-    // {
-    //     $schedule->command('inspire')->hourly();
-    // }
+    public function register(): void
+    {
+        parent::register();
+
+        $this->registerOrders();
+    }
+
+    protected function registerOrders(): void
+    {
+        $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
+    }
 }
