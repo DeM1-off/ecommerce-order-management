@@ -29,7 +29,7 @@ readonly class OrderCrudService
 
             $this->orderRepository->save($order);
 
-            return $order->load('items');
+            return $order->refresh()->load('items');
         });
     }
 

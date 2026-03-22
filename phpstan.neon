@@ -4,7 +4,8 @@ includes:
 parameters:
     paths:
         - app
-        - Modules
+        - Modules/Catalog/app
+        - Modules/Order/app
     level: 5
     checkModelProperties: true
     ignoreErrors: []
