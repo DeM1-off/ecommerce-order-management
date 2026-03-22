@@ -2,7 +2,9 @@
 
 namespace Modules\Catalog\Providers;
 
+use Modules\Catalog\Contracts\CategoryRepositoryInterface;
 use Modules\Catalog\Contracts\ProductRepositoryInterface;
+use Modules\Catalog\Repositories\CategoryRepository;
 use Modules\Catalog\Repositories\ProductRepository;
 use Nwidart\Modules\Support\ModuleServiceProvider;
 
@@ -40,11 +42,17 @@ class CatalogServiceProvider extends ModuleServiceProvider
         parent::register();
 
         $this->registerProducts();
+        $this->registerCategories();
     }
 
     protected function registerProducts(): void
     {
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+    }
+
+    protected function registerCategories(): void
+    {
+        $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
     }
 
     /**

@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Order\Contracts;
 
-use Illuminate\Support\Collection;
-use Modules\Order\Dto\Models\OrderData;
+use Modules\Order\Models\Order;
 
 interface OrderRepositoryInterface
 {
-    public function findById(int $id): ?OrderData;
-
-    public function findAll(): Collection;
+    public function save(Order $order): Order;
 }

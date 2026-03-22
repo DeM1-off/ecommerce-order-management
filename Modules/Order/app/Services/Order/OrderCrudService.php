@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Modules\Order\Services;
+namespace Modules\Order\Services\Order;
 
 use Illuminate\Support\Facades\DB;
+use Modules\Order\Contracts\OrderRepositoryInterface;
 use Modules\Order\Dto\Requests\OrderCreateData;
 use Modules\Order\Enums\OrderStatus;
 use Modules\Order\Models\Order;
-use Modules\Order\Repositories\OrderRepository;
+use Modules\Order\Services\OrderItem\OrderItemCrudService;
 
 readonly class OrderCrudService
 {
     public function __construct(
-        protected OrderRepository $orderRepository,
+        protected OrderRepositoryInterface $orderRepository,
         protected OrderItemCrudService $orderItemCrudService,
     ) {}
 

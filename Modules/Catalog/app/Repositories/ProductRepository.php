@@ -18,13 +18,6 @@ class ProductRepository implements ProductRepositoryInterface
         return $product;
     }
 
-    public function findById(int $id): ?ProductData
-    {
-        $product = Product::find($id);
-
-        return $product ? ProductData::from($product) : null;
-    }
-
     /** @param  int[]  $ids */
     public function findByIds(array $ids): Collection
     {
