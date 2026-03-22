@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Order\Services;
+namespace Modules\Order\Services\OrderItem;
 
 use Illuminate\Support\Collection;
 use Modules\Catalog\Contracts\ProductRepositoryInterface;

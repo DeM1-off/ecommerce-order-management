@@ -10,11 +10,11 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Modules\Catalog\Contracts\CategoryRepositoryInterface;
 use Modules\Catalog\Contracts\ProductRepositoryInterface;
 use Modules\Catalog\Dto\Models\ProductData;
-use Modules\Catalog\Models\Category;
 use Modules\Order\Dto\Requests\OrderCreateData;
-use Modules\Order\Services\OrderCrudService;
+use Modules\Order\Services\Order\OrderCrudService;
 
 #[Layout('order::components.layouts.master')]
 class CreateOrder extends Component
@@ -54,7 +54,7 @@ class CreateOrder extends Component
     #[Computed]
     public function categories(): Collection
     {
-        return Category::orderBy('name')->get();
+        return app(CategoryRepositoryInterface::class)->findAll();
     }
 
     #[Computed]

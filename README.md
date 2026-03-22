@@ -110,10 +110,71 @@ The application is split into two independent modules:
 
 ```
 Modules/
-├── Catalog/    — product catalog, categories, Filament CRUD
-└── Order/      — order processing, Livewire order creation, status workflow
+├── Catalog/                   — product catalog management
+│   ├── app/
+│   │   ├── Contracts/         — CategoryRepositoryInterface, ProductRepositoryInterface
+│   │   ├── Dto/               — CategoryData, ProductData
+│   │   ├── Exceptions/        — ProductNotFoundException
+│   │   ├── Filament/          — CategoryResource, ProductResource (admin panel)
+│   │   ├── Models/            — Category, Product
+│   │   └── Repositories/      — CategoryRepository, ProductRepository
+│   └── database/
+│       ├── migrations/
+│       └── seeders/
+└── Order/                     — order processing
+    ├── app/
+    │   ├── Contracts/         — OrderRepositoryInterface
+    │   ├── Dto/               — OrderCreateData, OrderItemCreateData
+    │   ├── Enums/             — OrderStatus
+    │   ├── Filament/          — OrderResource (admin panel)
+    │   ├── Livewire/          — CreateOrder (public order form)
+    │   ├── Models/            — Order, OrderItem
+    │   ├── Repositories/      — OrderRepository, OrderItemRepository
+    │   └── Services/
+    │       ├── Order/         — OrderCrudService
+    │       └── OrderItem/     — OrderItemCrudService
+    └── database/
+        ├── migrations/
+        └── seeders/
 ```
+
+### Layers
+
+| Layer | Responsibility |
+|-------|---------------|
+| **Model** | Eloquent ORM, casts, relationships |
+| **Repository** | Database queries, returns DTOs |
+| **DTO** | Typed data transfer via `spatie/laravel-data` |
+| **Service** | Business logic, orchestrates repositories |
+| **Filament Resource** | Admin panel CRUD |
+| **Livewire Component** | Interactive public UI |
 
 ### Cross-module Communication
 
-Coming soon.
+Modules communicate exclusively through contracts (interfaces), never by direct class coupling:
+
+```
+Order module
+    ├── CreateOrder (Livewire)
+    │       └── CategoryRepositoryInterface  ← contract (defined in Catalog)
+    │                   ↓
+    │           CategoryRepository  ← implementation (resolved via IoC container)
+    └── OrderItemCrudService
+            └── ProductRepositoryInterface  ← contract (defined in Catalog)
+                        ↓
+                ProductRepository  ← implementation (resolved via IoC container)
+```
+
+The `Order` module depends on `Catalog` only through contracts. This means the `Catalog` implementation can be swapped without touching `Order`.
+
+### Order Flow
+
+```
+POST /orders/create (Livewire)
+    └── OrderCrudService::create(OrderCreateData)
+            ├── Order::forceFill() + save()         — creates order record
+            └── OrderItemCrudService::attachToOrder()
+                    ├── ProductRepository::findByIds() — resolves products via contract
+                    ├── OrderItem::create() per item   — saves line items
+                    └── calculateTotal()               — returns total amount
+```

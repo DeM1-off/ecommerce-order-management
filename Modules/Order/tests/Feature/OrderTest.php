@@ -9,7 +9,7 @@ use Modules\Catalog\Models\Product;
 use Modules\Order\Dto\Requests\OrderCreateData;
 use Modules\Order\Enums\OrderStatus;
 use Modules\Order\Models\Order;
-use Modules\Order\Services\OrderCrudService;
+use Modules\Order\Services\Order\OrderCrudService;
 
 uses(RefreshDatabase::class);
 

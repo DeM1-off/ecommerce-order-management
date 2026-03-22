@@ -6,10 +6,8 @@ namespace Modules\Catalog\Contracts;
 
 use Illuminate\Support\Collection;
 
-interface ProductRepositoryInterface
+interface CategoryRepositoryInterface
 {
-    /** @param  int[]  $ids */
-    public function findByIds(array $ids): Collection;
-
+    /** @return Collection<int, \Modules\Catalog\Dto\Models\CategoryData> */
     public function findAll(): Collection;
 }
