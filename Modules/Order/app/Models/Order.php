@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Order\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Order\Enums\OrderStatus;
@@ -18,6 +19,7 @@ use Modules\Order\Enums\OrderStatus;
  * @property string $total_amount
  * @property OrderStatus $status
  */
+#[Fillable(['customer_name', 'customer_email', 'total_amount', 'status'])]
 class Order extends Model
 {
     public function items(): HasMany
